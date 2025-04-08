@@ -1,0 +1,21 @@
+# mid_tier_dc.yaml
+# Configuration for a typical mid-tier colocation facility
+# ~500 racks, mixed workload (enterprise + some HPC)
+
+facility_name: "Mid-Tier Colo Example"
+n_racks: 500
+rows: 25
+
+# power config
+max_rack_kw: 20
+avg_pue: 1.45
+
+# cooling
+cooling_type: "chiller_with_crac"
+target_inlet_temp_c: 21.0
+hot_aisle_containment: true
+
+# supply chain
+procurement_region: "APAC"
+primary_vendor: "HPE"
+gpu_vendor: "Dell"
