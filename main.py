@@ -1,5 +1,5 @@
 """
-main.py — entry point for the synthetic data generator
+main.py  -  entry point for the synthetic data generator
 
 Usage:
     python main.py --config examples/mid_tier_dc.yaml --days 90 --output ./data/
@@ -62,7 +62,7 @@ def main():
     power_gen = PowerGenerator(power_config)
     power_df = power_gen.generate(start=start, end=end_str)
 
-    # thermal — uses power as input
+    # thermal  -  uses power as input
     thermal_config = ThermalConfig(seed=args.seed + 1)
     thermal_gen = ThermalGenerator(thermal_config)
     thermal_df = thermal_gen.generate(power_df)

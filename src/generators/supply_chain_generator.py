@@ -3,13 +3,13 @@ supply_chain_generator.py
 
 Generates synthetic supply chain event data for data centre hardware.
 
-This one is rougher than the thermal/power generators — supply chain
+This one is rougher than the thermal/power generators  -  supply chain
 data is really hard to get and I haven't had as many real examples
 to validate against. The main things I'm trying to capture:
 
   1. Lead times for servers/GPUs/networking are long and variable
-     (especially during supply crunches — 2022-2023 was wild)
-  2. There's a lumpy, project-driven demand pattern — capacity
+     (especially during supply crunches  -  2022-2023 was wild)
+  2. There's a lumpy, project-driven demand pattern  -  capacity
      additions come in big chunks, not continuous trickle
   3. Procurement has a human in the loop, so you see things like
      orders that arrive faster than expected (expedited), orders
@@ -59,7 +59,7 @@ class SupplyChainConfig:
     slip_rate: float = 0.25
     # fraction cancelled/re-ordered
     cancel_rate: float = 0.05
-    # supply crunch period — lead times multiply during this window
+    # supply crunch period  -  lead times multiply during this window
     crunch_start: Optional[str] = "2024-06-01"
     crunch_end: Optional[str] = "2024-11-01"
     crunch_multiplier: float = 1.6

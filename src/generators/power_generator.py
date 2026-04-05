@@ -3,7 +3,7 @@ power_generator.py
 
 Generates synthetic power draw time-series for data centre racks and PDUs.
 
-The main challenge here is making the load look realistic — real DC power
+The main challenge here is making the load look realistic  -  real DC power
 has strong daily/weekly seasonality, correlated spikes across racks in the
 same cluster, and occasional weird artefacts from UPS switchovers.
 
@@ -68,10 +68,10 @@ class PowerGenerator:
             for rack_idx in range(rows_per_col):
                 rack_id = f"R{row_idx:02d}-{rack_idx:02d}"
                 row_id = f"ROW-{row_idx:02d}"
-                # assign cluster — every 4 racks share a top-of-rack switch
+                # assign cluster  -  every 4 racks share a top-of-rack switch
                 cluster_id = f"cluster_{(row_idx * rows_per_col + rack_idx) // 4}"
 
-                # vary max_kw a bit — not all racks are identical
+                # vary max_kw a bit  -  not all racks are identical
                 max_kw = self.rng.normal(20.0, 3.0)
                 max_kw = float(np.clip(max_kw, 8.0, 40.0))
 
@@ -90,7 +90,7 @@ class PowerGenerator:
         Business hours load profile.
 
         Real data centres don't have a hard 9-5 shape, but there IS a meaningful
-        weekly pattern — batch jobs tend to run overnight and on weekends,
+        weekly pattern  -  batch jobs tend to run overnight and on weekends,
         interactive workloads peak during business hours.
 
         This is a rough approximation. The actual shape varies a lot by customer mix.
@@ -98,7 +98,7 @@ class PowerGenerator:
         hour = timestamps.hour.values
         dow = timestamps.dayofweek.values  # 0=Monday
 
-        # base daily profile — gentle curve, not a sharp step
+        # base daily profile  -  gentle curve, not a sharp step
         # peaks around 2pm, drops overnight
         daily = 0.7 + 0.3 * np.sin(np.pi * (hour - 6) / 16) ** 2
         daily = np.where((hour < 6) | (hour > 22), 0.75, daily)  # overnight floor
@@ -129,7 +129,7 @@ class PowerGenerator:
         """
         Batch job spikes that are correlated within a cluster.
         When a job lands on a cluster, all racks in that cluster see
-        a load jump — not perfectly synchronised, but close.
+        a load jump  -  not perfectly synchronised, but close.
         """
         n_steps = len(timestamps)
         unique_clusters = list(set(cluster_ids))
@@ -144,7 +144,7 @@ class PowerGenerator:
             spike_indices = np.where(spike_mask)[0]
 
             for idx in spike_indices:
-                # spike decays exponentially — batch jobs ramp up then finish
+                # spike decays exponentially  -  batch jobs ramp up then finish
                 duration = int(self.rng.exponential(30))  # ~30 steps average
                 end_idx = min(idx + duration, n_steps)
                 magnitude = self.config.spike_magnitude * self.rng.uniform(0.5, 1.0)
@@ -195,7 +195,7 @@ class PowerGenerator:
             load = np.clip(load, rack.max_kw * 0.1, rack.max_kw)
 
             # UPS load is just a slight overhead above IT load
-            # 95% efficiency assumption — rough but fine for now
+            # 95% efficiency assumption  -  rough but fine for now
             ups_load_pct = (load / rack.max_kw) * (1 / 0.95) * 100
 
             rack_df = pd.DataFrame({

@@ -5,7 +5,7 @@ Generates correlated thermal sensor data from power draw time-series.
 
 Physics-lite approach: treat each rack as a heat source, model airflow
 propagation as a simple first-order lag from power to temperature.
-Not CFD — just enough to make the correlations look real.
+Not CFD  -  just enough to make the correlations look real.
 
 The key insight: temperature doesn't respond instantly to load changes.
 There's a thermal mass in the aisle, rack, and servers. So a power spike
@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class ThermalConfig:
-    # target inlet temp — ASHRAE A2 class is 10-35°C
+    # target inlet temp  -  ASHRAE A2 class is 10-35°C
     target_inlet_c: float = 21.0
     inlet_variation: float = 2.0      # ±°C variation around target
     # delta-T across rack at full load (outlet - inlet)
@@ -76,7 +76,7 @@ class ThermalGenerator:
     def _inlet_temp_profile(self, timestamps: pd.DatetimeIndex) -> np.ndarray:
         """
         Inlet temp has its own profile driven by CRAC setpoint and
-        outdoor ambient. Simplified here — real cooling systems have
+        outdoor ambient. Simplified here  -  real cooling systems have
         complex control loops with deadbands, but this captures the
         general shape.
         """
@@ -84,13 +84,13 @@ class ThermalGenerator:
         hour = timestamps.hour.values
 
         # outdoor ambient drives a small diurnal variation in cooling efficiency
-        # more pronounced in summer — hardcoding for now, should be configurable
+        # more pronounced in summer  -  hardcoding for now, should be configurable
         diurnal = 0.8 * np.sin(2 * np.pi * (hour - 14) / 24)  # peak at 2pm
 
-        # slow drift in cooling setpoint — operators sometimes adjust this
+        # slow drift in cooling setpoint  -  operators sometimes adjust this
         drift = 0.5 * np.sin(2 * np.pi * np.arange(n) / (n * 0.7))
 
-        # sensor noise — inlet sensors are usually pretty good, low noise
+        # sensor noise  -  inlet sensors are usually pretty good, low noise
         noise = self.rng.normal(0, 0.3, n)
 
         return self.config.target_inlet_c + diurnal + drift + noise
@@ -136,7 +136,7 @@ class ThermalGenerator:
             inlet_temp = inlet_base + self.rng.normal(0, 0.2, len(timestamps))
             outlet_temp = inlet_temp + outlet_delta + outlet_noise
 
-            # CRAC load — responds to aggregate row heat load with its own lag
+            # CRAC load  -  responds to aggregate row heat load with its own lag
             # oversimplified but directionally correct
             crac_load_raw = self._apply_thermal_lag(load_frac * 80 + 10, self.config.cooling_response_steps)
             crac_load = np.clip(crac_load_raw + self.rng.normal(0, 1.5, len(timestamps)), 5, 100)
