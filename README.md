@@ -6,7 +6,7 @@ The outputs are designed to mimic real sensor patterns, including realistic nois
 
 ## Overview
 
-Data centres have a lot of sensors but almost nobody publishes clean datasets. This tool generates synthetic time-series data for:
+Data centres have a lot of sensors but almost nobody publishes clean datasets. This tool generates synthetic time series data for:
 
 - **Power**: per-rack PDU readings, UPS telemetry, utility feed data
 - **Thermal**: CRAC/CRAH inlet/outlet temps, hot aisle containment, ambient
@@ -67,6 +67,6 @@ Supply chain generator is still rough. It generates Poisson-distributed order ar
 ## TODO
 
 - [ ] Liquid cooling topology support (direct-to-chip, rear-door HX)
-- [ ] More fault modes: intermittent sensor dropout, stuck-at values
+- [ ] More fault modes: intermittent sensor dropout, stuck at values
 - [ ] Validation suite to compare statistical properties against real data
 - [ ] Network/optical telemetry generator
